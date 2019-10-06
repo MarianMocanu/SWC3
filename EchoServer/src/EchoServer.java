@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class EchoServer {
     public static void main(String[] args) throws IOException {
@@ -16,11 +18,14 @@ public class EchoServer {
 
         try {
             ServerSocket serverSocket = new ServerSocket(port);
+            ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                Thread serverThread = new Thread(new EchoHandler(clientSocket));
-                serverThread.start();
+                executor.execute(new EchoHandler(clientSocket));
+                
+//                Thread serverThread = new Thread(new EchoHandler(clientSocket));
+//                serverThread.start();
             }
         } catch (IOException e) {
             System.out.println("Exception caught when initializing the server socket");

@@ -1,5 +1,3 @@
-import com.sun.tools.javac.Main;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,6 +19,16 @@ public class EchoHandler implements Runnable {
         }
     }
 
+    public void disconnect() {
+        try {
+            in.close();
+            out.close();
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Exception caught when closing the I/O");
+        }
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -37,7 +45,9 @@ public class EchoHandler implements Runnable {
                     }
                 }
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                System.out.println("Unexpected connection interruption");
+                disconnect();
+                return;
             }
         }
     }

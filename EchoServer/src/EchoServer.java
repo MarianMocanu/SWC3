@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.Executors;
@@ -23,9 +20,6 @@ public class EchoServer {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 executor.execute(new EchoHandler(clientSocket));
-                
-//                Thread serverThread = new Thread(new EchoHandler(clientSocket));
-//                serverThread.start();
             }
         } catch (IOException e) {
             System.out.println("Exception caught when initializing the server socket");
